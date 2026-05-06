@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SentimentAI — Biswas Khatiwada | Iowa State University</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #C8102E;
+    --gold: #F1BE48;
+    --dark: #1A1A1A;
+    --gray: #4A4A4A;
+    --light: #F9F9F9;
+    --white: #FFFFFF;
+    --dark-red: #9B0D22;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    color: var(--dark);
+    background: var(--white);
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4 { font-family: 'Merriweather', serif; }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: var(--dark);
+    border-bottom: 3px solid var(--gold);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+  }
+
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .isu-badge {
+    background: var(--red);
+    color: var(--white);
+    font-family: 'Merriweather', serif;
+    font-weight: 900;
+    font-size: 1.1rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 4px;
+    letter-spacing: 1px;
+  }
+
+  .nav-title { color: var(--white); }
+  .nav-title h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: 0.5px; }
+  .nav-title span { font-size: 0.75rem; color: var(--gold); font-family: 'Source Sans 3', sans-serif; font-weight: 400; }
+
+  .nav-links { display: flex; gap: 0.25rem; list-style: none; }
+  .nav-links a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.4rem 0.75rem;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--white); background: var(--red); }
+
+  .nav-toggle { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; }
+  .nav-toggle span { width: 24px; height: 2px; background: var(--white); display: block; }
+
+  /* HERO */
+  #home {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: #0d0d0d;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://www.iastate.edu/files/2019/11/campus-fall.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.12;
+    filter: grayscale(30%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 2rem 4rem;
+    text-align: center;
+  }
+
+  .hero-content h1 {
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    color: var(--white);
+    line-height: 1.25;
+    margin-bottom: 1.25rem;
+    max-width: 820px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-content h1 span { color: var(--gold); }
+
+  .hero-sub {
+    color: #b0b0b0;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    max-width: 680px;
+    margin: 0 auto 1.75rem;
+  }
+
+  .author-badge {
+    display: inline-block;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.4rem 1.1rem;
+    border-radius: 50px;
+    margin-bottom: 2rem;
+    letter-spacing: 0.5px;
+  }
+
+  .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3.5rem; }
+
+  .btn {
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.8rem 2rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+  .btn-red { background: var(--red); color: var(--white); }
+  .btn-red:hover { background: #a80d25; transform: translateY(-2px); }
+  .btn-gold { background: var(--gold); color: var(--dark); }
+  .btn-gold:hover { background: #d9a83a; transform: translateY(-2px); }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .stat-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 1.5rem 1rem;
+    backdrop-filter: blur(4px);
+  }
+
+  .stat-card .stat-number {
+    font-family: 'Merriweather', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--gold);
+    display: block;
+  }
+  .stat-card .stat-label { font-size: 0.85rem; color: #aaa; font-weight: 600; }
+
+  /* SECTION SHARED */
+  section { padding: 5rem 2rem; }
+  .section-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 900;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+  .section-divider {
+    width: 60px;
+    height: 4px;
+    background: var(--gold);
+    margin-bottom: 2.5rem;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  /* PROBLEM */
+  #problem { background: var(--white); }
+
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    margin-bottom: 3rem;
+  }
+
+  .problem-box h3, .solution-box h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+  .problem-box h3 { color: var(--red); }
+  .solution-box h3 { color: #2E7D4F; }
+
+  .problem-box p, .solution-box p { color: var(--gray); font-size: 1rem; line-height: 1.75; }
+
+  .icon-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .icon-card {
+    background: var(--light);
+    border-radius: 12px;
+    padding: 1.75rem 1.25rem;
+    text-align: center;
+    border-top: 4px solid var(--red);
+  }
+
+  .icon-card .icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+  .icon-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .icon-card p { font-size: 0.875rem; color: var(--gray); }
+
+  /* METHODOLOGY */
+  #methods { background: var(--light); }
+
+  .pipeline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+    margin-bottom: 3rem;
+  }
+
+  .pipeline::after {
+    content: '';
+    position: absolute;
+    top: 48px;
+    left: 12.5%;
+    width: 75%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--red), var(--gold));
+    z-index: 0;
+  }
+
+  .step {
+    text-align: center;
+    padding: 0 1rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-num {
+    width: 56px;
+    height: 56px;
+    background: var(--red);
+    color: var(--white);
+    font-family: 'Merriweather', serif;
+    font-weight: 900;
+    font-size: 1.4rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    border: 4px solid var(--light);
+    box-shadow: 0 0 0 3px var(--red);
+  }
+
+  .step h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--dark); }
+  .step p { font-size: 0.82rem; color: var(--gray); }
+
+  .tools-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+  .tools-table th, .tools-table td { padding: 0.75rem 1rem; text-align: left; font-size: 0.9rem; border-bottom: 1px solid #e0e0e0; }
+  .tools-table th { background: var(--dark); color: var(--white); font-weight: 700; }
+  .tools-table tr:hover { background: #f0f0f0; }
+
+  /* RESULTS */
+  #results { background: var(--white); }
+
+  .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .chart-card {
+    background: var(--light);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #e8e8e8;
+  }
+
+  .chart-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; color: var(--dark); }
+
+  .chart-card canvas { max-height: 260px; }
+
+  .insight-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  .insight-card {
+    border-radius: 10px;
+    padding: 1.4rem 1.2rem;
+    border-left: 5px solid;
+  }
+
+  .insight-card.green { background: #f0faf4; border-color: #2E7D4F; }
+  .insight-card.red { background: #fef0f2; border-color: var(--red); }
+  .insight-card.gold { background: #fffbec; border-color: var(--gold); }
+
+  .insight-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .insight-card p { font-size: 0.875rem; color: var(--gray); line-height: 1.6; }
+  .insight-card.green h4 { color: #2E7D4F; }
+  .insight-card.red h4 { color: var(--red); }
+  .insight-card.gold h4 { color: #7a6000; }
+
+  /* TABLE */
+  #data { background: var(--light); }
+
+  .filter-buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+
+  .filter-btn {
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.45rem 1.1rem;
+    border-radius: 50px;
+    border: 2px solid #ccc;
+    background: var(--white);
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--gray);
+  }
+  .filter-btn:hover { border-color: var(--red); color: var(--red); }
+  .filter-btn.active { background: var(--red); border-color: var(--red); color: var(--white); }
+  .filter-btn[data-filter="Positive"].active { background: #2E7D4F; border-color: #2E7D4F; }
+  .filter-btn[data-filter="Negative"].active { background: var(--red); border-color: var(--red); }
+  .filter-btn[data-filter="Neutral"].active { background: #b8860b; border-color: #b8860b; }
+
+  .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid #e0e0e0; background: var(--white); }
+
+  table.reviews { width: 100%; border-collapse: collapse; min-width: 900px; }
+  table.reviews th { background: var(--dark); color: var(--white); padding: 0.9rem 1rem; text-align: left; font-size: 0.85rem; font-weight: 700; }
+  table.reviews td { padding: 0.85rem 1rem; font-size: 0.875rem; border-bottom: 1px solid #f0f0f0; color: var(--gray); }
+  table.reviews tbody tr:hover { background: #fafafa; }
+  table.reviews td:first-child { font-weight: 700; color: var(--dark); }
+
+  .badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    letter-spacing: 0.5px;
+  }
+  .badge-positive { background: #e6f7ee; color: #2E7D4F; }
+  .badge-negative { background: #fdecea; color: var(--red); }
+  .badge-neutral { background: #fff8e1; color: #7a6000; }
+
+  .stars { color: #f59e0b; }
+
+  /* RECOMMENDATIONS */
+  #recommendations { background: var(--dark-red); }
+  #recommendations .section-title { color: var(--white); }
+  #recommendations .section-label { color: var(--gold); }
+  #recommendations .section-divider { background: var(--gold); }
+
+  .rec-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .rec-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 14px;
+    padding: 2rem 1.5rem;
+    transition: transform 0.2s;
+  }
+  .rec-card:hover { transform: translateY(-4px); }
+
+  .rec-num {
+    font-family: 'Merriweather', serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .rec-card h3 { font-size: 1.2rem; color: var(--white); font-weight: 700; margin-bottom: 0.75rem; }
+  .rec-card p { font-size: 0.9rem; color: rgba(255,255,255,0.75); line-height: 1.7; }
+
+  /* ABOUT */
+  #about { background: var(--white); }
+
+  .about-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; align-items: start; }
+
+  .profile-card {
+    background: var(--light);
+    border-radius: 14px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    border-top: 6px solid var(--red);
+  }
+
+  .avatar {
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(135deg, var(--red), var(--dark-red));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Merriweather', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--white);
+    margin: 0 auto 1rem;
+    border: 4px solid var(--gold);
+  }
+
+  .profile-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .profile-card .profile-sub { font-size: 0.85rem; color: var(--gray); margin-bottom: 0.15rem; }
+  .profile-card .profile-course { font-size: 0.875rem; color: var(--red); font-weight: 700; margin-top: 0.5rem; }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .meta-item { background: var(--light); border-radius: 8px; padding: 1rem; }
+  .meta-item .meta-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--red); margin-bottom: 0.25rem; }
+  .meta-item .meta-value { font-size: 0.95rem; font-weight: 600; color: var(--dark); }
+
+  .conclusion-quote {
+    background: linear-gradient(135deg, var(--red), var(--dark-red));
+    color: var(--white);
+    border-radius: 12px;
+    padding: 2rem;
+    font-family: 'Merriweather', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    line-height: 1.6;
+    position: relative;
+  }
+  .conclusion-quote::before { content: '"'; font-size: 5rem; color: rgba(255,255,255,0.2); position: absolute; top: -0.5rem; left: 1rem; line-height: 1; font-family: 'Merriweather', serif; }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    border-top: 4px solid var(--red);
+    padding: 2rem;
+  }
+
+  .footer-gold-line { height: 2px; background: var(--gold); margin-bottom: 2rem; }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-left { color: #aaa; font-size: 0.875rem; }
+  .footer-left span { color: var(--gold); font-weight: 700; }
+
+  .footer-right { color: #888; font-size: 0.85rem; font-style: italic; }
+
+  .footer-bottom {
+    max-width: 1100px;
+    margin: 1.5rem auto 0;
+    text-align: center;
+    color: #555;
+    font-size: 0.8rem;
+    border-top: 1px solid #333;
+    padding-top: 1rem;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .nav-links { display: none; flex-direction: column; position: absolute; top: 68px; left: 0; right: 0; background: var(--dark); padding: 1rem; gap: 0; }
+    .nav-links.open { display: flex; }
+    .nav-toggle { display: flex; }
+    nav { position: sticky; }
+
+    .problem-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .icon-grid { grid-template-columns: 1fr; }
+    .pipeline { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+    .pipeline::after { display: none; }
+    .charts-grid { grid-template-columns: 1fr; }
+    .insight-cards { grid-template-columns: 1fr; }
+    .rec-grid { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr; }
+    .meta-grid { grid-template-columns: 1fr; }
+    .footer-inner { flex-direction: column; text-align: center; }
+    .stat-grid { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-left">
+    <div class="isu-badge">ISU</div>
+    <div class="nav-title">
+      <h1>SentimentAI</h1>
+      <span>Biswas Khatiwada | AI 2010</span>
+    </div>
+  </div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home" class="active">Home</a></li>
+    <li><a href="#problem">Problem</a></li>
+    <li><a href="#methods">Methods</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#recommendations">Recommendations</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="author-badge">Biswas Khatiwada | Iowa State University | AI 2010</div>
+    <h1>AI-Powered Customer Review <span>Sentiment Analyzer</span></h1>
+    <p class="hero-sub">Using Natural Language Processing to turn 75 customer reviews into actionable marketing intelligence for small businesses — no coding required.</p>
+    <div class="hero-buttons">
+      <a href="#results" class="btn btn-red">Explore Results</a>
+      <a href="#methods" class="btn btn-gold">Read Report</a>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <span class="stat-number">49%</span>
+        <span class="stat-label">Positive Reviews</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">40%</span>
+        <span class="stat-label">Negative Reviews</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">3.47★</span>
+        <span class="stat-label">Avg Rating</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">75</span>
+        <span class="stat-label">Reviews Analyzed</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="container">
+    <div class="section-label">Research Context</div>
+    <h2 class="section-title">The Problem We Solved</h2>
+    <div class="section-divider"></div>
+    <div class="problem-grid">
+      <div class="problem-box">
+        <h3>The Problem</h3>
+        <p>Small restaurants like Bella's Bistro receive hundreds of customer reviews on Google and Yelp every month. Owners and managers simply don't have the time to read every review individually. Critical feedback about food quality, wait times, pricing, and service gets buried and goes unread. As a result, important patterns — like a spike in complaints about slow service during the holiday season — are never identified. This leads to uninformed marketing decisions, unresolved customer pain points, and ultimately lost customers who never return.</p>
+        <p style="margin-top:1rem;">Traditional manual review reading is slow, subjective, and inconsistent. One manager might notice pricing complaints; another might focus on atmosphere. There's no systematic, reproducible method for turning reviews into strategic insight.</p>
+      </div>
+      <div class="solution-box">
+        <h3>The Solution</h3>
+        <p>AI-powered Natural Language Processing (NLP) sentiment analysis automatically reads and classifies every single review as Positive, Negative, or Neutral — in seconds. Each review is also tagged with a topic category such as Food Quality, Wait Time, Pricing, or Service, so owners can see exactly <em>what</em> is driving satisfaction or frustration.</p>
+        <p style="margin-top:1rem;">The result is a complete marketing intelligence dashboard with zero coding required. Instead of guessing, a small business owner can immediately see their top strengths, their most urgent problems, how satisfaction changes month-over-month, and how they stack up against competitors — all from a single automated AI pipeline.</p>
+        <p style="margin-top:1rem;">This project demonstrates how accessible AI tools like ChatGPT and Claude can be used by non-technical business owners to make data-driven marketing decisions.</p>
+      </div>
+    </div>
+    <div class="icon-grid">
+      <div class="icon-card">
+        <div class="icon">🧠</div>
+        <h4>Sentiment Analysis (NLP)</h4>
+        <p>Natural language models classify each review as Positive, Negative, or Neutral with high accuracy.</p>
+      </div>
+      <div class="icon-card">
+        <div class="icon">🏷️</div>
+        <h4>Topic Extraction</h4>
+        <p>AI automatically tags each review with categories: Food, Service, Pricing, Wait Time, Ambiance, and Menu.</p>
+      </div>
+      <div class="icon-card">
+        <div class="icon">📊</div>
+        <h4>Data Visualization</h4>
+        <p>Interactive charts and dashboards turn raw classified data into clear, actionable marketing intelligence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section id="methods">
+  <div class="container">
+    <div class="section-label">AI Pipeline</div>
+    <h2 class="section-title">How It Works — The AI Pipeline</h2>
+    <div class="section-divider"></div>
+    <div class="pipeline">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h4>Collect Reviews</h4>
+        <p>Google & Yelp<br>75 reviews<br>Oct 2025–Mar 2026</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h4>AI Sentiment Classification</h4>
+        <p>ChatGPT/Claude NLP<br>Positive / Negative / Neutral</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h4>Topic Extraction</h4>
+        <p>Food Quality, Pricing, Wait Time, Service, Ambiance, Menu</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h4>Visualize & Report</h4>
+        <p>Charts, Dashboard, Marketing Recommendations</p>
+      </div>
+    </div>
+    <table class="tools-table">
+      <thead>
+        <tr>
+          <th>Tool / Platform</th>
+          <th>Role in Pipeline</th>
+          <th>Stage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>ChatGPT / Claude AI</td><td>NLP sentiment classification and topic extraction</td><td>Analysis</td></tr>
+        <tr><td>Microsoft Excel</td><td>Data organization, storage, and preliminary tallying</td><td>Processing</td></tr>
+        <tr><td>React + Recharts / Chart.js</td><td>Interactive data visualization and dashboard</td><td>Visualization</td></tr>
+        <tr><td>Google Reviews</td><td>Primary source of customer review data</td><td>Collection</td></tr>
+        <tr><td>Yelp</td><td>Secondary source of customer review data</td><td>Collection</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results">
+  <div class="container">
+    <div class="section-label">Key Findings</div>
+    <h2 class="section-title">What the AI Found — Key Results</h2>
+    <div class="section-divider"></div>
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3>Sentiment Distribution</h3>
+        <canvas id="sentimentChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Topic Sentiment Breakdown</h3>
+        <canvas id="topicChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Monthly Satisfaction Trend</h3>
+        <canvas id="trendChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Competitor Comparison</h3>
+        <canvas id="competitorChart"></canvas>
+      </div>
+    </div>
+    <div class="insight-cards">
+      <div class="insight-card green">
+        <h4>Top Strength</h4>
+        <p>Food Quality scores 76% positive reviews. Customer Service is even stronger at 89% positive — guests consistently praise attentive, knowledgeable staff.</p>
+      </div>
+      <div class="insight-card red">
+        <h4>Critical Issue</h4>
+        <p>Wait Time is 100% negative across all reviews — every single mention is a complaint. Pricing is 86% negative, indicating a serious value-for-money perception gap.</p>
+      </div>
+      <div class="insight-card gold">
+        <h4>Trend Alert</h4>
+        <p>Satisfaction dropped sharply from 100% in October to 0% in December–January — a holiday season crisis that was completely invisible without AI analysis.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TABLE -->
+<section id="data">
+  <div class="container">
+    <div class="section-label">Raw Data</div>
+    <h2 class="section-title">Sample Review Data — AI Analysis Output</h2>
+    <div class="section-divider"></div>
+    <div class="filter-buttons">
+      <button class="filter-btn active" data-filter="All">All Reviews</button>
+      <button class="filter-btn" data-filter="Positive">Positive</button>
+      <button class="filter-btn" data-filter="Negative">Negative</button>
+      <button class="filter-btn" data-filter="Neutral">Neutral</button>
+    </div>
+    <div class="table-wrap">
+      <table class="reviews" id="reviewTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Review Text</th>
+            <th>Stars</th>
+            <th>Date</th>
+            <th>Platform</th>
+            <th>Topic</th>
+            <th>Sentiment</th>
+          </tr>
+        </thead>
+        <tbody id="reviewBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- RECOMMENDATIONS -->
+<section id="recommendations">
+  <div class="container">
+    <div class="section-label">Action Plan</div>
+    <h2 class="section-title">3 Marketing Recommendations</h2>
+    <div class="section-divider"></div>
+    <div class="rec-grid">
+      <div class="rec-card">
+        <div class="rec-num">01</div>
+        <h3>Fix Wait Times</h3>
+        <p>Implement a digital waitlist app with SMS updates so guests can wait offsite comfortably. Hire additional front-of-house staff specifically for weekend rushes and the holiday season (November–January). Launch an Early Bird Special — 15% off all orders placed before 6 PM — to redistribute demand and reduce peak-hour congestion. Track monthly wait time review sentiment to measure progress.</p>
+      </div>
+      <div class="rec-card">
+        <div class="rec-num">02</div>
+        <h3>Reframe Pricing</h3>
+        <p>Launch a prix fixe "Chef's 3-Course for $45" menu that clearly communicates value over individual item pricing. Introduce a loyalty program — every 10th visit earns a complimentary course — to reward repeat customers and increase perceived value. Run a targeted social media campaign promoting the premium local and imported Italian ingredients used in each dish, anchoring the price to provenance and quality.</p>
+      </div>
+      <div class="rec-card">
+        <div class="rec-num">03</div>
+        <h3>Expand Menu</h3>
+        <p>Add 3–4 new vegetarian and gluten-free dishes to address the menu variety complaints identified in the AI analysis. Clearly label all allergen-friendly items on both the physical and digital menu. Partner with dietary-focused local food bloggers and Instagram creators for organic promotion. This expands the addressable customer base and signals that Bella's Bistro is inclusive and modern without abandoning its Italian identity.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">Student Project</div>
+    <h2 class="section-title">About This Project</h2>
+    <div class="section-divider"></div>
+    <div class="about-grid">
+      <div class="profile-card">
+        <div class="avatar">BK</div>
+        <h3>Biswas Khatiwada</h3>
+        <p class="profile-sub">Iowa State University</p>
+        <p class="profile-sub">Business &amp; Marketing</p>
+        <p class="profile-course">AI 2010 — Intro to Applied AI</p>
+      </div>
+      <div>
+        <div class="meta-grid">
+          <div class="meta-item">
+            <div class="meta-label">Course</div>
+            <div class="meta-value">AI 2010 — Introduction to Applied AI</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Major</div>
+            <div class="meta-value">Business &amp; Marketing</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">University</div>
+            <div class="meta-value">Iowa State University</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Analysis Period</div>
+            <div class="meta-value">October 2025 – March 2026</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Total Reviews</div>
+            <div class="meta-value">75 (Google + Yelp)</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">AI Tools Used</div>
+            <div class="meta-value">ChatGPT, Claude AI, Chart.js</div>
+          </div>
+        </div>
+        <div class="conclusion-quote">
+          AI does not replace the marketer — it gives them superpowers.
+          <br><br>
+          <strong style="font-size:0.9rem; font-style:normal; color:rgba(255,255,255,0.8);">— Biswas Khatiwada, Iowa State University</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-gold-line"></div>
+  <div class="footer-inner">
+    <div class="footer-left">
+      <span>SentimentAI</span> — Biswas Khatiwada | Iowa State University | AI 2010 | April 2026
+    </div>
+    <div class="footer-right">Built with NLP, Chart.js, and zero coding</div>
+  </div>
+  <div class="footer-bottom">
+    Iowa State University® is a registered trademark of Iowa State University of Science and Technology. This project is submitted for academic coursework only.
+  </div>
+</footer>
+
+<script>
+// REVIEW DATA
+const reviews = [
+  { id:'B001', text:'The pasta carbonara here is absolutely divine. Best I\'ve had outside of Italy!', stars:5, date:'2025-10-03', platform:'Google', topic:'Food Quality', sentiment:'Positive' },
+  { id:'B002', text:'Fresh ingredients and amazing flavors. The bruschetta was a highlight.', stars:5, date:'2025-10-05', platform:'Yelp', topic:'Food Quality', sentiment:'Positive' },
+  { id:'B003', text:'Our waiter Marco was incredibly attentive and knowledgeable.', stars:5, date:'2025-10-08', platform:'Google', topic:'Customer Service', sentiment:'Positive' },
+  { id:'B004', text:'Waited 45 minutes for a table even with a reservation. Unacceptable.', stars:2, date:'2025-12-01', platform:'Google', topic:'Wait Time', sentiment:'Negative' },
+  { id:'B005', text:'The portions are small for the price. $28 for pasta is too much.', stars:2, date:'2025-12-10', platform:'Google', topic:'Pricing', sentiment:'Negative' },
+  { id:'B006', text:'The candlelit dining room is so romantic. Perfect for date night.', stars:5, date:'2025-10-15', platform:'Google', topic:'Ambiance', sentiment:'Positive' },
+  { id:'B007', text:'Food took over an hour to arrive. We almost walked out.', stars:1, date:'2025-12-18', platform:'Yelp', topic:'Wait Time', sentiment:'Negative' },
+  { id:'B008', text:'Best Italian restaurant in the area. We\'ve tried them all.', stars:5, date:'2025-11-02', platform:'Google', topic:'Overall Experience', sentiment:'Positive' },
+  { id:'B009', text:'Way overpriced for what you get. Better options for less money.', stars:2, date:'2026-01-05', platform:'Yelp', topic:'Pricing', sentiment:'Negative' },
+  { id:'B010', text:'Decent food, nothing spectacular. Pasta was good but I\'ve had better.', stars:3, date:'2026-02-10', platform:'Google', topic:'Food Quality', sentiment:'Neutral' },
+  { id:'B011', text:'The staff made us feel like family. Such a warm atmosphere.', stars:5, date:'2025-10-20', platform:'Yelp', topic:'Customer Service', sentiment:'Positive' },
+  { id:'B012', text:'Reservation system is broken. Called three times, nobody answered.', stars:1, date:'2026-01-15', platform:'Google', topic:'Customer Service', sentiment:'Negative' }
+];
+
+function starHTML(n) {
+  return '<span class="stars">' + '★'.repeat(n) + '☆'.repeat(5 - n) + '</span>';
+}
+
+function renderTable(filter) {
+  const tbody = document.getElementById('reviewBody');
+  const filtered = filter === 'All' ? reviews : reviews.filter(r => r.sentiment === filter);
+  tbody.innerHTML = filtered.map(r => {
+    const badgeClass = r.sentiment === 'Positive' ? 'badge-positive' : r.sentiment === 'Negative' ? 'badge-negative' : 'badge-neutral';
+    return `<tr data-sentiment="${r.sentiment}">
+      <td>${r.id}</td>
+      <td>${r.text}</td>
+      <td>${starHTML(r.stars)}</td>
+      <td>${r.date}</td>
+      <td>${r.platform}</td>
+      <td>${r.topic}</td>
+      <td><span class="badge ${badgeClass}">${r.sentiment}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+renderTable('All');
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    renderTable(this.dataset.filter);
+  });
+});
+
+// NAV TOGGLE
+document.getElementById('navToggle').addEventListener('click', function() {
+  document.getElementById('navLinks').classList.toggle('open');
+});
+
+// ACTIVE NAV LINK ON SCROLL
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 100) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+});
+
+// CHARTS
+Chart.defaults.font.family = "'Source Sans 3', sans-serif";
+
+// Chart 1 — Sentiment Donut
+new Chart(document.getElementById('sentimentChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Positive', 'Negative', 'Neutral'],
+    datasets: [{
+      data: [27, 22, 6],
+      backgroundColor: ['#2E7D4F', '#C8102E', '#F1BE48'],
+      borderWidth: 3,
+      borderColor: '#ffffff'
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 16, font: { size: 13 } } },
+      tooltip: {
+        callbacks: {
+          label: ctx => ` ${ctx.label}: ${ctx.parsed} reviews`
+        }
+      }
+    },
+    cutout: '60%'
+  }
+});
+
+// Chart 2 — Topic Stacked Bar (horizontal)
+new Chart(document.getElementById('topicChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Food Quality', 'Customer Service', 'Ambiance', 'Menu Variety', 'Pricing', 'Wait Time'],
+    datasets: [
+      { label: 'Positive', data: [13, 8, 4, 1, 0, 0], backgroundColor: '#2E7D4F' },
+      { label: 'Negative', data: [1, 1, 2, 2, 6, 7], backgroundColor: '#C8102E' },
+      { label: 'Neutral',  data: [3, 0, 0, 0, 1, 0], backgroundColor: '#F1BE48' }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 12, font: { size: 12 } } }
+    },
+    scales: {
+      x: { stacked: true, grid: { color: '#f0f0f0' } },
+      y: { stacked: true, ticks: { font: { size: 11 } } }
+    }
+  }
+});
+
+// Chart 3 — Monthly Satisfaction Line
+new Chart(document.getElementById('trendChart'), {
+  type: 'line',
+  data: {
+    labels: ["Oct '25", "Nov '25", "Dec '25", "Jan '26", "Feb '26", "Mar '26"],
+    datasets: [{
+      label: 'Satisfaction %',
+      data: [100, 90, 0, 0, 0, 50],
+      borderColor: '#C8102E',
+      backgroundColor: 'rgba(200, 16, 46, 0.1)',
+      borderWidth: 3,
+      tension: 0.3,
+      fill: true,
+      pointBackgroundColor: '#C8102E',
+      pointRadius: 5
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'bottom' }
+    },
+    scales: {
+      y: { min: 0, max: 100, ticks: { callback: v => v + '%' }, grid: { color: '#f0f0f0' } },
+      x: { grid: { color: '#f0f0f0' } }
+    }
+  }
+});
+
+// Chart 4 — Competitor Bar
+new Chart(document.getElementById('competitorChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Avg Rating', '% Positive', '% Negative'],
+    datasets: [
+      { label: "Bella's Bistro", data: [3.47, 49, 40], backgroundColor: '#C8102E' },
+      { label: "Mario's Kitchen", data: [3.25, 35, 30], backgroundColor: '#8A8A8A' }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 16, font: { size: 13 } } }
+    },
+    scales: {
+      y: { beginAtZero: true, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>
