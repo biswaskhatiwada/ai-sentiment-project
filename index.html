@@ -724,7 +724,7 @@
 <section id="data">
   <div class="container">
     <div class="section-label">Raw Data</div>
-    <h2 class="section-title">Sample Review Data — AI Analysis Output</h2>
+    <h2 class="section-title">Full Review Dataset — All 55 Reviews Analyzed</h2>
     <div class="section-divider"></div>
     <div class="filter-buttons">
       <button class="filter-btn active" data-filter="All">All Reviews</button>
@@ -843,20 +843,63 @@
 </footer>
 
 <script>
-// REVIEW DATA
+// REVIEW DATA — all 55 Bella's Bistro reviews from Customer_Review_Analysis.xlsx
 const reviews = [
-  { id:'B001', text:'The pasta carbonara here is absolutely divine. Best I\'ve had outside of Italy!', stars:5, date:'2025-10-03', platform:'Google', topic:'Food Quality', sentiment:'Positive' },
-  { id:'B002', text:'Fresh ingredients and amazing flavors. The bruschetta was a highlight.', stars:5, date:'2025-10-05', platform:'Yelp', topic:'Food Quality', sentiment:'Positive' },
-  { id:'B003', text:'Our waiter Marco was incredibly attentive and knowledgeable.', stars:5, date:'2025-10-08', platform:'Google', topic:'Customer Service', sentiment:'Positive' },
-  { id:'B004', text:'Waited 45 minutes for a table even with a reservation. Unacceptable.', stars:2, date:'2025-12-01', platform:'Google', topic:'Wait Time', sentiment:'Negative' },
-  { id:'B005', text:'The portions are small for the price. $28 for pasta is too much.', stars:2, date:'2025-12-10', platform:'Google', topic:'Pricing', sentiment:'Negative' },
-  { id:'B006', text:'The candlelit dining room is so romantic. Perfect for date night.', stars:5, date:'2025-10-15', platform:'Google', topic:'Ambiance', sentiment:'Positive' },
-  { id:'B007', text:'Food took over an hour to arrive. We almost walked out.', stars:1, date:'2025-12-18', platform:'Yelp', topic:'Wait Time', sentiment:'Negative' },
-  { id:'B008', text:'Best Italian restaurant in the area. We\'ve tried them all.', stars:5, date:'2025-11-02', platform:'Google', topic:'Overall Experience', sentiment:'Positive' },
-  { id:'B009', text:'Way overpriced for what you get. Better options for less money.', stars:2, date:'2026-01-05', platform:'Yelp', topic:'Pricing', sentiment:'Negative' },
-  { id:'B010', text:'Decent food, nothing spectacular. Pasta was good but I\'ve had better.', stars:3, date:'2026-02-10', platform:'Google', topic:'Food Quality', sentiment:'Neutral' },
-  { id:'B011', text:'The staff made us feel like family. Such a warm atmosphere.', stars:5, date:'2025-10-20', platform:'Yelp', topic:'Customer Service', sentiment:'Positive' },
-  { id:'B012', text:'Reservation system is broken. Called three times, nobody answered.', stars:1, date:'2026-01-15', platform:'Google', topic:'Customer Service', sentiment:'Negative' }
+  { id:'B001', text:"The pasta carbonara here is absolutely divine. Best I've had outside of Italy!", stars:5, date:'2025-10-02', platform:'Google', topic:'Food Quality', sentiment:'Positive' },
+  { id:'B002', text:'Fresh ingredients and amazing flavors. The bruschetta appetizer was a highlight.', stars:5, date:'2025-10-07', platform:'Yelp', topic:'Food Quality', sentiment:'Positive' },
+  { id:'B003', text:'Tried the seafood risotto and it was cooked to perfection. Will definitely come back.', stars:5, date:'2025-10-07', platform:'Google', topic:'Food Quality', sentiment:'Positive' },
+  { id:'B004', text:'The tiramisu is hands down the best dessert in town. So creamy and rich!', stars:5, date:'2025-10-08', platform:'Google', topic:'Food Quality', sentiment:'Positive' },
+  { id:'B005', text:'Every dish we ordered was fantastic. The chef really knows Italian cuisine.', stars:5, date:'2025-10-09', platform:'Yelp', topic:'Food Quality', sentiment:'Positive' },
+  { id:'B006', text:'The pizza margherita was authentic and delicious. Thin crust, perfect sauce.', stars:4, date:'2025-10-12', platform:'Google', topic:'Food Quality', sentiment:'Positive' },
+  { id:'B007', text:'Great quality food. The lasagna was hearty and flavorful.', stars:4, date:'2025-10-21', platform:'Yelp', topic:'Food Quality', sentiment:'Positive' },
+  { id:'B008', text:'Loved the homemade pasta. You can tell they use quality ingredients.', stars:5, date:'2025-10-23', platform:'Google', topic:'Food Quality', sentiment:'Positive' },
+  { id:'B009', text:'The minestrone soup was comforting and full of fresh vegetables.', stars:4, date:'2025-10-24', platform:'Yelp', topic:'Food Quality', sentiment:'Positive' },
+  { id:'B010', text:'Excellent wood-fired pizza. The dough has that perfect chew.', stars:5, date:'2025-10-24', platform:'Google', topic:'Food Quality', sentiment:'Positive' },
+  { id:'B011', text:'The osso buco melted in my mouth. Truly exceptional.', stars:5, date:'2025-10-25', platform:'Yelp', topic:'Food Quality', sentiment:'Positive' },
+  { id:'B012', text:'Simple but perfectly executed dishes. The caprese salad was so fresh.', stars:4, date:'2025-10-27', platform:'Google', topic:'Food Quality', sentiment:'Positive' },
+  { id:'B013', text:'Our waiter Marco was incredibly attentive and knowledgeable about the menu.', stars:5, date:'2025-10-27', platform:'Google', topic:'Customer Service', sentiment:'Positive' },
+  { id:'B014', text:'The staff made us feel like family. Such a warm and welcoming atmosphere.', stars:5, date:'2025-10-29', platform:'Yelp', topic:'Customer Service', sentiment:'Positive' },
+  { id:'B015', text:'They accommodated our large party of 12 with no issues. Great service!', stars:5, date:'2025-11-01', platform:'Google', topic:'Customer Service', sentiment:'Positive' },
+  { id:'B016', text:'The owner came to our table to check on us personally. That kind of care is rare.', stars:5, date:'2025-11-05', platform:'Google', topic:'Customer Service', sentiment:'Positive' },
+  { id:'B017', text:'Friendly staff who genuinely seem to enjoy their work. Makes the experience better.', stars:4, date:'2025-11-09', platform:'Yelp', topic:'Customer Service', sentiment:'Positive' },
+  { id:'B018', text:'They remembered our anniversary and brought out a complimentary dessert. So thoughtful!', stars:5, date:'2025-11-10', platform:'Google', topic:'Customer Service', sentiment:'Positive' },
+  { id:'B019', text:'Quick and efficient service even on a busy Friday night. Impressed.', stars:4, date:'2025-11-20', platform:'Yelp', topic:'Customer Service', sentiment:'Positive' },
+  { id:'B020', text:'The candlelit dining room is so romantic. Perfect for date night.', stars:5, date:'2025-11-25', platform:'Google', topic:'Ambiance', sentiment:'Positive' },
+  { id:'B021', text:"Beautiful rustic Italian decor. Feels like you've been transported to Tuscany.", stars:5, date:'2025-11-25', platform:'Yelp', topic:'Ambiance', sentiment:'Positive' },
+  { id:'B022', text:'Love the outdoor patio area. Great for summer evenings.', stars:4, date:'2025-11-26', platform:'Google', topic:'Ambiance', sentiment:'Positive' },
+  { id:'B023', text:'The live music on weekends adds such a nice touch to the dining experience.', stars:5, date:'2025-11-27', platform:'Yelp', topic:'Ambiance', sentiment:'Positive' },
+  { id:'B024', text:'Waited 45 minutes for a table even with a reservation. Unacceptable.', stars:2, date:'2025-11-29', platform:'Google', topic:'Wait Time', sentiment:'Negative' },
+  { id:'B025', text:'Food took over an hour to arrive. We almost walked out.', stars:1, date:'2025-12-02', platform:'Yelp', topic:'Wait Time', sentiment:'Negative' },
+  { id:'B026', text:'The wait time on weekends is ridiculous. They need more staff.', stars:2, date:'2025-12-07', platform:'Google', topic:'Wait Time', sentiment:'Negative' },
+  { id:'B027', text:'Had to wait 30 minutes just to get our drinks order taken. Very slow.', stars:2, date:'2025-12-10', platform:'Yelp', topic:'Wait Time', sentiment:'Negative' },
+  { id:'B028', text:'Service was painfully slow. We were there for nearly 3 hours for a simple dinner.', stars:1, date:'2025-12-11', platform:'Google', topic:'Wait Time', sentiment:'Negative' },
+  { id:'B029', text:'They clearly overbook reservations. We waited 25 minutes past our reservation time.', stars:2, date:'2025-12-11', platform:'Yelp', topic:'Wait Time', sentiment:'Negative' },
+  { id:'B030', text:'Great food but be prepared to wait. Took forever to get seated.', stars:3, date:'2025-12-26', platform:'Google', topic:'Wait Time', sentiment:'Negative' },
+  { id:'B031', text:'The portions are small for the price. $28 for a plate of pasta is too much.', stars:2, date:'2025-12-27', platform:'Google', topic:'Pricing', sentiment:'Negative' },
+  { id:'B032', text:'Way overpriced for what you get. There are better options for less money.', stars:2, date:'2025-12-28', platform:'Yelp', topic:'Pricing', sentiment:'Negative' },
+  { id:'B033', text:'The wine markup is insane. $60 for a bottle that costs $15 at the store.', stars:2, date:'2025-12-31', platform:'Google', topic:'Pricing', sentiment:'Negative' },
+  { id:'B034', text:'Good food but not worth the premium prices. Our bill for two was $150.', stars:3, date:'2026-01-05', platform:'Yelp', topic:'Pricing', sentiment:'Negative' },
+  { id:'B035', text:"Prices have gone up significantly since last year. Hard to justify regular visits.", stars:3, date:'2026-01-06', platform:'Google', topic:'Pricing', sentiment:'Negative' },
+  { id:'B036', text:'The appetizers are overpriced. $18 for a small bruschetta plate?', stars:2, date:'2026-01-16', platform:'Yelp', topic:'Pricing', sentiment:'Negative' },
+  { id:'B037', text:'Parking is a nightmare. We circled the block for 20 minutes.', stars:3, date:'2026-01-17', platform:'Google', topic:'Parking/Location', sentiment:'Negative' },
+  { id:'B038', text:'The restaurant is too noisy. Could barely hear my dinner companion.', stars:3, date:'2026-01-17', platform:'Yelp', topic:'Ambiance', sentiment:'Negative' },
+  { id:'B039', text:'My steak was overcooked. When I sent it back, they seemed annoyed.', stars:2, date:'2026-01-23', platform:'Google', topic:'Food Quality', sentiment:'Negative' },
+  { id:'B040', text:'The gluten-free options are very limited. Disappointing for a modern restaurant.', stars:3, date:'2026-01-26', platform:'Yelp', topic:'Menu Variety', sentiment:'Negative' },
+  { id:'B041', text:'Restrooms were not clean. That reflects poorly on the kitchen too.', stars:2, date:'2026-02-07', platform:'Google', topic:'Cleanliness', sentiment:'Negative' },
+  { id:'B042', text:"Decent food, nothing spectacular. The pasta was good but I've had better.", stars:3, date:'2026-02-15', platform:'Google', topic:'Food Quality', sentiment:'Neutral' },
+  { id:'B043', text:'Nice place for a casual dinner. Not a destination restaurant but solid.', stars:3, date:'2026-02-17', platform:'Yelp', topic:'Overall Experience', sentiment:'Neutral' },
+  { id:'B044', text:'The appetizers were great but the main course was just okay.', stars:3, date:'2026-02-17', platform:'Google', topic:'Food Quality', sentiment:'Neutral' },
+  { id:'B045', text:"Good atmosphere but the food didn't live up to the hype.", stars:3, date:'2026-02-19', platform:'Yelp', topic:'Food Quality', sentiment:'Neutral' },
+  { id:'B046', text:'Average experience. Nothing wrong but nothing that stands out either.', stars:3, date:'2026-02-21', platform:'Google', topic:'Overall Experience', sentiment:'Neutral' },
+  { id:'B047', text:'The lunch menu is better value than dinner. Go for lunch instead.', stars:3, date:'2026-02-28', platform:'Yelp', topic:'Pricing', sentiment:'Neutral' },
+  { id:'B048', text:"Best Italian restaurant in the area. We've tried them all.", stars:5, date:'2026-03-01', platform:'Google', topic:'Overall Experience', sentiment:'Positive' },
+  { id:'B049', text:"The chef's special is always worth trying. Never been disappointed.", stars:5, date:'2026-03-04', platform:'Yelp', topic:'Food Quality', sentiment:'Positive' },
+  { id:'B050', text:'Perfect for family dinners. Kid-friendly menu and staff are patient with children.', stars:4, date:'2026-03-04', platform:'Google', topic:'Customer Service', sentiment:'Positive' },
+  { id:'B051', text:'The wine selection is impressive. The sommelier gave excellent recommendations.', stars:5, date:'2026-03-13', platform:'Yelp', topic:'Menu Variety', sentiment:'Positive' },
+  { id:'B052', text:'Reservation system is broken. Called three times and nobody answered.', stars:1, date:'2026-03-16', platform:'Google', topic:'Customer Service', sentiment:'Negative' },
+  { id:'B053', text:'The vegetarian options are an afterthought. Just a basic salad and one pasta.', stars:2, date:'2026-03-23', platform:'Yelp', topic:'Menu Variety', sentiment:'Negative' },
+  { id:'B054', text:'Found a hair in my food. Manager offered a discount but should have comped the meal.', stars:1, date:'2026-03-28', platform:'Google', topic:'Cleanliness', sentiment:'Negative' },
+  { id:'B055', text:"AC wasn't working in summer. We were sweating through dinner.", stars:2, date:'2026-03-29', platform:'Yelp', topic:'Ambiance', sentiment:'Negative' }
 ];
 
 function starHTML(n) {
@@ -939,15 +982,15 @@ new Chart(document.getElementById('sentimentChart'), {
   }
 });
 
-// Chart 2 — Topic Stacked Bar (horizontal)
+// Chart 2 — Topic Stacked Bar (horizontal) — all 9 categories from Excel
 new Chart(document.getElementById('topicChart'), {
   type: 'bar',
   data: {
-    labels: ['Food Quality', 'Customer Service', 'Ambiance', 'Menu Variety', 'Pricing', 'Wait Time'],
+    labels: ['Food Quality', 'Customer Service', 'Wait Time', 'Pricing', 'Ambiance', 'Overall Exp.', 'Menu Variety', 'Cleanliness', 'Parking/Loc.'],
     datasets: [
-      { label: 'Positive', data: [13, 8, 4, 1, 0, 0], backgroundColor: '#2E7D4F' },
-      { label: 'Negative', data: [1, 1, 2, 2, 6, 7], backgroundColor: '#C8102E' },
-      { label: 'Neutral',  data: [3, 0, 0, 0, 1, 0], backgroundColor: '#F1BE48' }
+      { label: 'Positive', data: [13, 8, 0, 0, 4, 1, 1, 0, 0], backgroundColor: '#2E7D4F' },
+      { label: 'Negative', data: [1,  1, 7, 6, 2, 0, 2, 2, 1], backgroundColor: '#C8102E' },
+      { label: 'Neutral',  data: [3,  0, 0, 1, 0, 2, 0, 0, 0], backgroundColor: '#F1BE48' }
     ]
   },
   options: {
@@ -958,7 +1001,7 @@ new Chart(document.getElementById('topicChart'), {
     },
     scales: {
       x: { stacked: true, grid: { color: '#f0f0f0' } },
-      y: { stacked: true, ticks: { font: { size: 11 } } }
+      y: { stacked: true, ticks: { font: { size: 10 } } }
     }
   }
 });
